@@ -8,13 +8,13 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from markdown2 import markdown
 
-template_env = Environment(loader=FileSystemLoader(searchpath=Path('src')))
+template_env = Environment(loader=FileSystemLoader(searchpath=Path('template')))
 template = template_env.get_template('layout.html')
 
-with open(Path('src/article.md')) as markdown_file:
-    article = markdown(
+with open(Path('content/article.md')) as markdown_file:
+    markdown_content = markdown(
         markdown_file.read(),
-        extras=['fenced-code-blocks', 'code-friendly']
+        extras=['metadata', 'fenced-code-blocks', 'code-friendly']
     )
 
 with open(Path('config.json')) as config_file:
@@ -28,7 +28,11 @@ with open(Path('site/index.html'), 'w') as output_file:
         template.render(
             title=config['title'],
             description=config['description'],
-            article=article
+            article={
+                'title': markdown_content.metadata['title'],
+                'date': markdown_content.metadata['date'],
+                'content': markdown_content
+            }
         )
     )
 

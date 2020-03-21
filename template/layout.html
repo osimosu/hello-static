@@ -6,8 +6,10 @@
     <title>{{ title }}</title>
 </head>
 <body>
-<h1>Welcome To My Site</h1>
+<h1> {{ title }} </h1>
 
-<section> {{ article }}</section>
+<h2> {{ article.title }}</h2>
+<small> {{ article.date }} </small>
+<p> {{ article.content }}</p>
 </body>
 </html>
