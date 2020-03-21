@@ -1,5 +1,6 @@
 from json import load
 from pathlib import Path
+import os
 
 from jinja2 import Environment, FileSystemLoader
 from markdown2 import markdown
@@ -15,6 +16,9 @@ with open(Path('src/article.md')) as markdown_file:
 
 with open(Path('config.json')) as config_file:
     config = load(config_file)
+
+if not os.path.exists(Path('site')):
+    os.makedirs(Path('site'))
 
 with open(Path('site/index.html'), 'w') as output_file:
     output_file.write(
