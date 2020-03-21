@@ -1,6 +1,9 @@
+import http.server
+import os
+import socketserver
+from functools import partial
 from json import load
 from pathlib import Path
-import os
 
 from jinja2 import Environment, FileSystemLoader
 from markdown2 import markdown
@@ -28,3 +31,10 @@ with open(Path('site/index.html'), 'w') as output_file:
             article=article
         )
     )
+
+PORT = 9000
+Handler = partial(http.server.SimpleHTTPRequestHandler, directory='site')
+
+with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    print("serving at port", PORT)
+    httpd.serve_forever()
